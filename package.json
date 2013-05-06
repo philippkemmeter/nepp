@@ -1,0 +1,26 @@
+{
+  "name": "nepp",
+  "version": "1.0.0",
+  "description": "Simple framework for protected (not private) object members implementing the Nepp pattern",
+  "main": "lib/",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/philippkemmeter/protected.nodejs"
+  },
+  "keywords": [
+    "framework",
+    "protected",
+    "encapsulation",
+    "utilities",
+    "classes"
+  ],
+  "author": "Philipp Kemmeter <phil.kemmeter@gmail.com>",
+  "license": "BSD",
+  "gitHead": "545d424c370ae652d5f7dc552d4a8adfd5739cda",
+  "devDependencies": {
+      "mocha": "*"
+  }
+}

@@ -157,7 +157,7 @@ those properties in enumerations.
 
 This is possible in ECMAScript 5 due to the `Object.defineProperty` function.
 
-### <a id="nepp_example">A simple example</a>
+### A simple example
 
 The following nodeJS example shows this pattern in action.
 
@@ -235,7 +235,7 @@ to define getters and setters.
 If, however, you want to nepp just one property of an object, you may call
 `nepp.property(this, '_prop')` and `this._prop` will be hidden in enumerations.
 
-## <a id="#libapi">API of this library</a>
+## API of this library
 
 ### `nepp(o, [prefix=_])`
 
@@ -264,7 +264,7 @@ You may omit either `getter` or `setter` but not both.
 
 ## Examples following the pattern using this library
 
-The [above](#nepp_example) example reduces to the following code using this
+The [above](#a-simple-example) example reduces to the following code using this
 library:
 
     var nepp = require('nepp');

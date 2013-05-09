@@ -1,9 +1,9 @@
 # Nepp
 
 With this library I introduce a new design pattern for ECMAScript5 including
-NodeJS: Nepp (**n**on **e**numerable **p**rotected **p**roperties).
+NodeJS: Nepp, **n**on **e**numerable **p**rotected **p**roperties.
 
-This design pattern helps with encapsulation by hiding protected properties from
+This design pattern helps encapsulating by hiding protected properties from
 enumeration. 
 
 This library assists using the pattern.
@@ -13,13 +13,13 @@ This library assists using the pattern.
 This chapter gives some background about concurrent patterns and solutions for
 private and protected properties and their implementation difficulties.
 
-### Private vs protected
+### Private vs Protected
 
 First of all, private and protected properties are terms of encapsulation in
 [object-oriented programming][wiki-oop]. Private properties are accessible from
-the class they belongs, only, whereas protected properties may be accessed in
-addition by any descendants. Therefore private properties are hidden even from
-inherited classes, but protected ones are hidden from public access, only.
+the class they belong, only, whereas protected properties may also be accessed
+by any descendants. Therefore private properties are hidden even from inherited
+classes, but protected ones are hidden from public access, only.
 
 In ECMAScript there are no private or protected properties. Encapsulation as in
 object-oriented programming languages is not part of its design. The visibility
@@ -27,28 +27,27 @@ of a variable - and therefore the access to it - is determined by its scope. In
 order to hide a variable, you have to define it in a restricted scope. This is
 usually be done using closures.
 
-### Solutions for privacy in ECMAScript
+### Solutions for Privacy in ECMAScript
 
 There are many solutions for creating true private objects in ECMAScript. The
-most famous around is [crockford's pattern][crockford], that had been published
+most famous around is [crockford's pattern][crockford], which had been published
 in 2001 already. Crockford distinguishes between private, priviledged and public
 members, whereas priviledged members are accessible from the public scope and
-have full access to private members. Because priviledged methods have to be
+have full access to private members. Since priviledged methods have to be
 defined in the constructor (not in the object's prototype), each instance
 creates a copy of a the same method. This is a major performance loss.
 
-There are solutions for this problem around, allowing prototype methods and
-private access using nice closure magic and global access methods. A very handy
-solution can be found in [Daan Kets private.js library][daankets].
-This is indeed a good solution for private members.
+There are solutions for this problem around. They allow prototype methods and
+private access using nice closure magic and global access methods, e.g.
+[Daan Kets private.js library][daankets].
 
 #### Disadvantages
 
-But all of those solution have a big downside: Real private members that are
+But all of those solutions have a big downside: Real private members that are
 hidden completely using closures change the style of ECMAScript dramatically
 in a bad way. As Addy Osmani pointed out in his Book ["Learning JavaScript
-Design Patterns"][osmani] writing about the Module Pattern, there are many
-disadvantages coming with privates in EMCAScript:
+Design Patterns"][osmani] (chapter Module Pattern), there are many disadvantages
+coming with private members in EMCAScript:
 > The disadvantages of the Module pattern are that as we access both public and
 > private members differently, when we wish to change visibility, we actually
 > have to make changes to each place the member was used.
@@ -65,19 +64,19 @@ disadvantages coming with privates in EMCAScript:
 > privates either, so it's worth remembering privates are not as flexible as
 > they may initially appear.
 
-Because "Monkey patching in javascript is called writing code." ([Paul Hummer
-on Twitter 2011][paulhummer]), private properties should be avoided. ECMAScript
-is about high flexibility.
+As "Monkey patching in javascript is called writing code." ([Paul Hummer on
+Twitter 2011][paulhummer]), private properties should be avoided. ECMAScript is
+about high flexibility after all.
 
-### Protected properties
+### Protected Properties
 
 As discussed before public members have important advantages against private
 ones concerning unit testability, monkey patching and flexibility in general.
-Marking public members with an underscore prefix as protected is a simple and 
-very common way. Developers seeing this sign will avoid accessing those
-properties directly, because as good developers they know that there is a
-reason why they got marked this way. And because they know that internal
-properties may be removed any time in later versions of the library…
+Marking public members as protected with an underscore prefix is a simple and 
+very common way. Developers who see this sign will avoid accessing those
+properties directly, because a good developer knows the reason why they got
+marked this way and that internal properties may be removed any time in later
+versions of the library…
 
 #### Disadvantages
 
@@ -143,13 +142,13 @@ no array anymore. Later calls of the setter `x` and `y` will not be able to
 repair this. The object stays broken and `point.x` as well as `point.y` will
 return `undefined` for ever.
 
-This happend, because the internal property `_point` was exposed completely. If
-it would have been hidden in enumerations, the for-in-loop iterated over
-`point.x` and `point.y` only as expected and the `point` object still worked.
+This happened, because the internal property `_point` was exposed completely.
+Had it been hidden in enumerations, the for-in-loop would iterate over `point.x`
+and `point.y` only as expected and the `point` object would still work.
 
 This is where the Nepp pattern comes into action.
 
-## Describing the Nepp pattern
+## Describing the Nepp Pattern
 
 The Nepp pattern supports the idea of exposing all properties in a way that they
 can be accessed easily - in order to be able to patch something -, but hides 
@@ -157,9 +156,9 @@ those properties in enumerations.
 
 This is possible in ECMAScript 5 due to the `Object.defineProperty` function.
 
-### A simple example
+### A Simple Example
 
-The following nodeJS example shows this pattern in action.
+The following NodeJS example shows this pattern in action.
 
     var A = function() {
 
@@ -211,23 +210,26 @@ The output is:
 
 Note, that neither `_myProtectedProp` nor `_myProtectedProp` are printed.
 
+AWESOME!
+
+DENNOCH SO BLÖD, DESWEGEN LIBRARY
+
 It's not comfortable to use this pattern as in the shown example, because the
 noise of the code increases dramatically. Therefore wrapping away the rather
 noisy `Object.defineProperty` calls should be done to keep the readability as
 high as possible. The nepp library performs this.
 
-## Key features of the nepp library
+## Key Features of the Nepp Library
 
 This library reduces the code noise dramatically by encapsulating the calls of
 `Object.defineProperty`. The definition of protected properties are "as usual",
 i.e. simple assignment to a property starting with an underscore. After the
-definition of those properties (that are enumerable due to the fact that they
+definition of those properties (which are enumerable due to the fact that they
 are defined the "normal way"), a call of `nepp(this)` in the constructor is
 enough to hide all protected properties belonging to `this`.
 
-The same technique has to be done with prototype methods. Just define the method
-normally and call `nepp(MyObject.prototype)` to nepp the prototype of
-`MyObject`.
+The same technique can be done with prototype methods. Just define the method as
+usual and call `nepp(MyObject.prototype)` to nepp the prototype of `MyObject`.
 
 As an additional convenience, the `nepp.createGS` method allows a less noisy way
 to define getters and setters.
@@ -235,25 +237,24 @@ to define getters and setters.
 If, however, you want to nepp just one property of an object, you may call
 `nepp.property(this, '_prop')` and `this._prop` will be hidden in enumerations.
 
-## API of this library
+## API of this Library
 
 ### `nepp(o, [prefix=_])`
 
-Calling the library as a function "nepps" the object `o`, i.e. all properties
-of that object starting with `prefix` become hidden from beeing visible in
-enumerations.
+By calling the library as a function the object `o` is *nepped*, i.e. all
+properties of that object starting with `prefix` will be hidden in enumerations.
 
 `prefix` defaults to `_`, if not specified.
 
 ### `nepp.property(o, name)`
 
-Nepps `o[name]`.
+*Nepps* `o[name]`.
 
-Sometimes it's useful to nepp just one property. For instance, if you already
-nepped the whole object but then added a new protected property to the object.
-Nepping this single property instead of the whole object is then the more
-efficient way, because the properties that are already hidden in enumeration
-would be redecleared otherwise.
+Sometimes it's useful to *nepp* just one property. For instance, if you have
+already *nepped* the whole object but then add a new protected property to the
+object.  *Nepping* this single property is in this case more efficient than
+*nepping* the whole object, because the properties that are already hidden in
+enumeration would be redecleared otherwise.
 
 
 ### `nepp.createGS(o, name, [getter], [setter])`
@@ -262,10 +263,10 @@ Registers a getter and/or a setter with the name `name` to the object `o`.
 
 You may omit either `getter` or `setter` but not both.
 
-## Examples following the pattern using this library
+## Examples Following the Pattern Using this Library
 
-The [above](#a-simple-example) example reduces to the following code using this
-library:
+Using this library the example [above](#a-simple-example) is reduced to the
+following code:
 
     var nepp = require('nepp');
 
@@ -306,9 +307,9 @@ library:
 
     for (i in a) { console.log(i) }
 
-As you see the readability has been improved a lot. The protected properties can
-be defined "as normal". After they have been defined, call `nepp(…)` to nepp the
-object, i.e. hide it's protected properties.
+As you can see the readability has been improved a lot. The protected properties
+can be defined "as normal". After they have been defined, call `nepp(…)` to nepp
+the object, i.e. hide it's protected properties.
 
 In addition `nepp.createGS` improved the readability on getter/setter
 definitions.

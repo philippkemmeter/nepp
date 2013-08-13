@@ -210,10 +210,6 @@ The output is:
 
 Note, that neither `_myProtectedProp` nor `_myProtectedProp` are printed.
 
-AWESOME!
-
-DENNOCH SO BLÖD, DESWEGEN LIBRARY
-
 It's not comfortable to use this pattern as in the shown example, because the
 noise of the code increases dramatically. Therefore wrapping away the rather
 noisy `Object.defineProperty` calls should be done to keep the readability as

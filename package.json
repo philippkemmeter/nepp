@@ -1,6 +1,6 @@
 {
   "name": "nepp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple framework for protected (not private) object members implementing the Nepp pattern",
   "main": "lib/",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/philippkemmeter/protected.nodejs"
+    "url": "git://github.com/philippkemmeter/nepp"
   },
   "keywords": [
     "framework",
